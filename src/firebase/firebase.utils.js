@@ -12,13 +12,35 @@ const config = {
   measurementId: "G-45FETWFKGB",
 };
 
+export const createUserProfile = async (userAuth, other) => {
+  if (!userAuth) return;
+
+  const userRef = firestore.doc(`users/${userAuth.uid}`);
+  const snapShot = await userRef.get();
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...other,
+      });
+    } catch (error) {
+      console.log("error creating users", error.message);
+    }
+  }
+  return userRef;
+};
+
 firebase.initializeApp(config);
 
-export const auth=firebase.auth();
-export const firestore=firebase.firestore();
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
 
-const Provider=new firebase.auth.GoogleAuthProvider();
-Provider.setCustomParameters({prompt:'select_account'});
+const Provider = new firebase.auth.GoogleAuthProvider();
+Provider.setCustomParameters({ prompt: "select_account" });
 
 export const SignInWithGoogle = () => auth.signInWithPopup(Provider);
 

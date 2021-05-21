@@ -4,7 +4,7 @@ import ShopPage from './pages/shop-page/shop-page-comp';
 import { Switch, Route } from "react-router-dom";
 import {Header} from './components/header/header-comp';
 import SignInSignOut from './pages/signin-signout-page/signin-signout-comp';
-import {auth} from './firebase/firebase.utils';
+import {auth,createUserProfile} from './firebase/firebase.utils';
 import React from "react";
 
 class App extends React.Component{
@@ -18,11 +18,23 @@ class App extends React.Component{
   removeFromAuth;
 
   componentDidMount(){
-    this.removeFromAuth=auth.onAuthStateChanged(user =>{
+    this.removeFromAuth=auth.onAuthStateChanged(async user =>{
+      //this.setState({currentUser:user});
+      if(user){
+        const userRef=await createUserProfile(user);
+        userRef.onSnapshot(snapshot => {
+          this.setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data()
+            }
+          }, () => {
+            console.log(this.state);
+          });
+        });
+      }
       this.setState({currentUser:user});
-      console.log(user);
     });
-    //console.log(user);
   }
 
 
