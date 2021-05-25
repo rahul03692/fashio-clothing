@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./checkout-styles.scss";
-
+import StripeCheckout from "../../components/stripe-checkout/stripe-checkout-comp";
 import { connect } from "react-redux";
 import {
   selectCartItems,
@@ -36,6 +36,12 @@ const CheckOut = ({ cartItems, total }) => {
       <div class="total">
         {total ? <span>Total: ${total}</span> : <span>Your Cart is Empty</span>}
       </div>
+      <div className="test-warning">
+        *Please Use Following Card Details*
+        <br />
+        4242 4242 4242 4242 - EXP: Any Future Date - CVV: Any 3 Digits
+      </div>
+      <StripeCheckout price={total} />
     </div>
   );
 };
