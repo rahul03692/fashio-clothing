@@ -10,10 +10,15 @@ export const selectShopItems = createSelector(
 
 export const selectCollectionsPreview=createSelector(
     [selectShopItems],
-    items=>Object.keys(items).map(item => items[item]),
+    items=>items? Object.keys(items).map(item => items[item]):null,
 );
 
 export const selectCollections =(collectionParams) => createSelector(
     [selectShopItems],
-    items => items[collectionParams],
+    items => items?items[collectionParams]:null,
+);
+
+export const selectLoading =createSelector(
+    [selectShop],
+    item=>item.loading,
 );

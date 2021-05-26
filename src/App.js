@@ -9,6 +9,8 @@ import React from "react";
 import {setCurrentUser} from './redux/user/user-actions'; 
 import CheckOut from './pages/checkout-page/checkout-comp';
 import {connect} from 'react-redux';
+import { selectCurrentUser } from "./redux/user/user-selectors";
+
 
 class App extends React.Component{
 
@@ -53,12 +55,13 @@ class App extends React.Component{
 
 
 const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
+  currentUser: selectCurrentUser(state),
 });
 
 
 const mapDispatchToProps= (dispatch) =>({
   setCurrentUser: (user)=>dispatch(setCurrentUser(user))
+
 });
 
 
